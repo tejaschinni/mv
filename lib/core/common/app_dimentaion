@@ -1,0 +1,250 @@
+// device_dimensions.dart
+import 'package:flutter/material.dart';
+
+class DeviceDimensionsService {
+  void init(BuildContext context) {
+    DeviceDimensions.init(context);
+  }
+}
+
+class DeviceDimensions {
+  // Private constructor to prevent instantiation
+  DeviceDimensions._();
+
+  // Static variables to store dimensions
+  static late double screenHeight;
+  static late double screenWidth;
+
+  // Updated breakpoints for modern device compatibility
+  //static const double smallPhoneBreakpoint = 600;
+  static const double smallPhoneBreakpoint = 600;
+  static const double mobileBreakpoint =
+      850; // Increased to handle large phones like Samsung Ultra
+  static const double tabletBreakpoint = 1100; // Adjusted accordingly
+  static const double desktopBreakpoint = 1280; // Slightly increased
+
+  // Device type checks
+  static bool get isSmallPhone => screenWidth < smallPhoneBreakpoint;
+  static bool get isLargePhone =>
+      screenWidth >= smallPhoneBreakpoint && screenWidth < mobileBreakpoint;
+  static bool get isMobile => screenWidth < mobileBreakpoint;
+  static bool get isTablet =>
+      screenWidth >= mobileBreakpoint && screenWidth < tabletBreakpoint;
+  static bool get isDesktop => screenWidth >= desktopBreakpoint;
+
+  // Initialize dimensions
+  static void init(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    screenHeight = mediaQuery.size.height;
+    screenWidth = mediaQuery.size.width;
+  }
+
+  // Get safe area screen height
+  static double get safeScreenHeight {
+    return screenHeight - (statusBarHeight + bottomBarHeight);
+  }
+
+  // Get status bar height
+  static double get statusBarHeight {
+    return MediaQueryData.fromView(
+      WidgetsBinding.instance.platformDispatcher.views.first,
+    ).padding.top;
+  }
+
+  // Get bottom bar height
+  static double get bottomBarHeight {
+    return MediaQueryData.fromView(
+      WidgetsBinding.instance.platformDispatcher.views.first,
+    ).padding.bottom;
+  }
+
+  // Helper methods for responsive sizing
+  static double height(double percent) {
+    return screenHeight * (percent / 100);
+  }
+
+  static double width(double percent) {
+    return screenWidth * (percent / 100);
+  }
+
+  // Responsive value helper based on screen size
+  static T responsiveValue<T>({
+    required T mobile,
+    T? tablet,
+    T? desktop,
+    T? largePhone,
+  }) {
+    if (isDesktop && desktop != null) return desktop;
+    if (isTablet && tablet != null) return tablet;
+    if (isLargePhone && largePhone != null) return largePhone;
+    return mobile;
+  }
+
+  // Font size helpers
+  static double get bodyText => responsiveValue(
+    mobile: 14.0,
+    largePhone: 15.0,
+    tablet: 16.0,
+    desktop: 18.0,
+  );
+  static double get bodyTitleText => responsiveValue(
+    mobile: 15.0,
+    largePhone: 16.0,
+    tablet: 17.0,
+    desktop: 18.0,
+  );
+  static double get extrasmallbodyText => responsiveValue(
+    mobile: 8.0,
+    largePhone: 9.0,
+    tablet: 10.0,
+    desktop: 11.0,
+  );
+  static double get smallbodyText => responsiveValue(
+    mobile: 10.0,
+    largePhone: 11.0,
+    tablet: 12.0,
+    desktop: 14.0,
+  );
+  static double get titlebodyText => responsiveValue(
+    mobile: 16.0,
+    largePhone: 17.0,
+    tablet: 18.0,
+    desktop: 20.0,
+  );
+  static double get titlebodyText1 => responsiveValue(
+    mobile: 13.0,
+    largePhone: 14.0,
+    tablet: 15.0,
+    desktop: 17.0,
+  );
+  static double get titleMedimbodyText => responsiveValue(
+    mobile: 18.0,
+    largePhone: 19.0,
+    tablet: 20.0,
+    desktop: 22.0,
+  );
+  static double get mediumbodyText => responsiveValue(
+    mobile: 12.0,
+    largePhone: 13.0,
+    tablet: 14.0,
+    desktop: 16.0,
+  );
+  static double get mediumbodyText1 => responsiveValue(
+    mobile: 11.0,
+    largePhone: 12.0,
+    tablet: 13.0,
+    desktop: 15.0,
+  );
+  static double get titleText => responsiveValue(
+    mobile: 20.0,
+    largePhone: 22.0,
+    tablet: 24.0,
+    desktop: 28.0,
+  );
+
+  static double get headingText => responsiveValue(
+    mobile: 24.0,
+    largePhone: 28.0,
+    tablet: 32.0,
+    desktop: 36.0,
+  );
+  static double get extraLargeTitle => responsiveValue(
+    mobile: 40.0,
+    largePhone: 44.0,
+    tablet: 48.0,
+    desktop: 52.0,
+  );
+  static double get headingText1 => responsiveValue(
+    mobile: 22.0,
+    largePhone: 24.0,
+    tablet: 26.0,
+    desktop: 28.0,
+  );
+  static double get headingTextExtra => responsiveValue(
+    mobile: 32.0,
+    largePhone: 34.0,
+    tablet: 36.0,
+    desktop: 38.0,
+  );
+  static double get headingMediumTextExtra => responsiveValue(
+    mobile: 28.0,
+    largePhone: 32.0,
+    tablet: 34.0,
+    desktop: 36.0,
+  );
+  // Padding helpers
+  static double get smallPadding => responsiveValue(
+    mobile: 8.0,
+    largePhone: 10.0,
+    tablet: 12.0,
+    desktop: 16.0,
+  );
+  static double get extrasmallPadding =>
+      responsiveValue(mobile: 4.0, largePhone: 6.0, tablet: 8.0, desktop: 12.0);
+  static double get extraextrasmallPadding =>
+      responsiveValue(mobile: 2.0, largePhone: 4.0, tablet: 6.0, desktop: 10.0);
+
+  static double get mediumPadding => responsiveValue(
+    mobile: 16.0,
+    largePhone: 20.0,
+    tablet: 24.0,
+    desktop: 32.0,
+  );
+  static double get mediumPadding1 => responsiveValue(
+    mobile: 14.0,
+    largePhone: 18.0,
+    tablet: 22.0,
+    desktop: 30.0,
+  );
+  static double get mediumPadding2 => responsiveValue(
+    mobile: 12.0,
+    largePhone: 14.0,
+    tablet: 16.0,
+    desktop: 18.0,
+  );
+
+    static double get mediumPadding3 => responsiveValue(
+    mobile: 10.0,
+    largePhone: 12.0,
+    tablet: 14.0,
+    desktop: 16.0,
+  );
+  static double get largePadding => responsiveValue(
+    mobile: 24.0,
+    largePhone: 28.0,
+    tablet: 32.0,
+    desktop: 48.0,
+  );
+  static double get extralargePadding => responsiveValue(
+    mobile: 34.0,
+    largePhone: 36.0,
+    tablet: 32.0,
+    desktop: 50.0,
+  );
+  // Screen size helpers
+  static bool isSmallScreen(BuildContext context) => screenWidth < 850;
+  static bool isLargeScreen(BuildContext context) => screenWidth > 1200;
+  static bool isMediumScreen(BuildContext context) =>
+      screenWidth >= 850 && screenWidth <= 1200;
+
+  // Orientation helpers
+  static bool isPortrait(BuildContext context) =>
+      MediaQuery.of(context).orientation == Orientation.portrait;
+
+  static bool isLandscape(BuildContext context) =>
+      MediaQuery.of(context).orientation == Orientation.landscape;
+
+  static double getResponsiveFontSize(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    if (screenWidth < smallPhoneBreakpoint) {
+      return 12;
+    } else if (screenWidth < mobileBreakpoint) {
+      return 14;
+    } else if (screenWidth < tabletBreakpoint) {
+      return 16;
+    } else {
+      return 18;
+    }
+  }
+}
